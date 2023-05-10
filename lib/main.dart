@@ -63,16 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
               fontSize: 40
             ),
         ),
-        actions: const [
+        actions: [
           Center(
             child: Padding(
-              padding: EdgeInsets.only(right:40),
-              child: Text('회원가입',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600
-                ),
-              )
+              padding: EdgeInsets.only(right:8),
+              child: IconButton(onPressed: (){
+                print('Menu!');
+              }, icon: Icon(Icons.menu))
             ),
           )
         ],
@@ -135,6 +132,40 @@ class _MyHomePageState extends State<MyHomePage> {
                 });  
               }, 
               icon: Icon(Icons.abc)
+            ),
+            Container(
+              padding: EdgeInsets.all(8),
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.circular(8)
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('나의 일정'),
+                      Text('2023-05-10')
+                    ],
+                  ),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      print('Add!');
+                    },
+                    child: Icon(Icons.add)
+                  )
+                ],
+              ),
             )
           ],
         ),
