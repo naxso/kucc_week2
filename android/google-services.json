@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "43979728355",
+    "project_id": "kucc-practice-run",
+    "storage_bucket": "kucc-practice-run.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43979728355:android:4a32eb5fbe2670b7602cd6",
+        "android_client_info": {
+          "package_name": "com.kucc.practice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43979728355-73lfaf063h6cccplmietbp4o8am9b5ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfXe84p8FXdSdm6nYuVkvyU94KuTQL-14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43979728355-73lfaf063h6cccplmietbp4o8am9b5ho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

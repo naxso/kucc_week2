@@ -1,6 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kucc/firebase_options.dart';
+import 'package:kucc/model/meeting.dart';
+import 'package:kucc/services/database_services.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -80,92 +89,91 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container( 
-                  child: Text('2023-05-08')
-                ),
-                SizedBox(width: 10,),
-                Container(
-                  child: Text('나의 일정1'),
-                ),
-              ],
-            ),
-            SizedBox(height: 10,),
-            Row(
-              children: [
-                Container( 
-                  child: Text('2023-05-08')
-                ),
-                SizedBox(width: 10,),
-                Container(
-                  child: Text('나의 일정1'),
-                ),
-              ],
-            ),
-            SizedBox(height: 10,),
-            Row(
-              children: [
-                Container( 
-                  child: Text('2023-05-08')
-                ),
-                SizedBox(width: 10,),
-                Container(
-                  child: Text('나의 일정1'),
-                ),
-              ],
-            ),
-            SizedBox(height: 10,),
-            Text(_counter.toString()),
-            IconButton(
-              onPressed: (){
-                setState(() {
-                  _counter++ ;
-                });  
-              }, 
-              icon: Icon(Icons.plus_one)
-            ),
-            IconButton(
-              onPressed: (){
-                setState(() {
-                  _counter-- ;
-                });  
-              }, 
-              icon: Icon(Icons.abc)
-            ),
-            Container(
-              padding: EdgeInsets.all(8),
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(8)
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 10,
+            FutureBuilder(
+              future: DatabaseServices().readMeetingDB(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  Meeting snapshotMeeting = snapshot.data as Meeting;
+
+                  return Container(
+                    padding: EdgeInsets.all(8),
+                    height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.redAccent
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(8)
                     ),
-                  ),
-                  SizedBox(width: 10,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('나의 일정'),
-                      Text('2023-05-10')
-                    ],
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      print('Add!');
-                    },
-                    child: Icon(Icons.add)
-                  )
-                ],
-              ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10,
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(snapshotMeeting.content),
+                            Text(snapshotMeeting.date.toString())
+                          ],
+                        ),
+                        Spacer(),
+                        InkWell(
+                          onTap: () async{
+                            Map<String, dynamic> updateData = {
+                              'content' : 'The content has been updated'
+                            };
+
+                            DatabaseServices().updateMeetingDB('meeting1', updateData);
+                            setState(() {
+                              
+                            });
+                          },
+                          child: Icon(Icons.add)
+                        )
+                      ],
+                    ),
+                  );
+                }
+
+                else {
+                  print('No data returned from DB!!');
+                  return Container();
+                }
+              },
+            ),
+
+            Container(
+              width: 50,
+              height: 50,
+              child: InkWell(
+                onTap: () async {
+                  var firstMeeting = Meeting(
+                    name: 'KUCC',
+                    content: 'KUCC 특강 2주차',
+                    date: DateTime.now()
+                  );
+          
+                  DatabaseServices().createMeetingDB(firstMeeting);
+                },
+                child: Icon(
+                  Icons.plus_one,
+                  size: 50,
+                  color: Colors.black,
+                )
+              )
+            ),
+
+            InkWell(
+              onTap: () {
+                DatabaseServices().deleteMeetingDB();
+              },
+              child: Icon(
+                Icons.exposure_minus_1,
+                size: 50
+              )
             )
           ],
         ),
