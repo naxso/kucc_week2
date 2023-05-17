@@ -1,3 +1,3 @@
 # kucc
 
-kucc 1주차 특강
+kucc 2주차 특강
